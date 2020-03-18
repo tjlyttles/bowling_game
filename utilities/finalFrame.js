@@ -1,20 +1,15 @@
 let isSpare = require("./isSpare");
 let isStrike = require("./isStrike");
 
-const finalFrame = (x, y, z) => {
+const finalFrame = (x, y) => {
   let strike = isStrike(x);
-  if (strike) {
-    y = Math.floor(Math.random() * Math.floor(11));
-  } else {
-    y = Math.floor(Math.random() * Math.floor(11 - x));
-  }
+  let bonusRoll = 0;
   if (isStrike(y) || isSpare(x, y)) {
-    z = Math.floor(Math.random() * Math.floor(11));
-  } else {
-    z = Math.floor(Math.random() * Math.floor(11 - y));
+    return (bonusRoll = Math.floor(Math.random() * Math.floor(11)));
+  } else if (strike) {
+    return (bonusRoll = Math.floor(Math.random() * Math.floor(11 - y)));
   }
-  console.log(x, y, z);
-  return x, y, z;
+  return bonusRoll;
 };
 
 module.exports = finalFrame;

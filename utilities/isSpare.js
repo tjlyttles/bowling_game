@@ -1,8 +1,5 @@
-const isSpare = (firstRoll, secondRoll) => {
-  if (firstRoll < 10) {
-    return firstRoll + secondRoll === 10;
-  }
-  return false;
+const isSpare = frameTotal => {
+  return frameTotal === 10;
 };
 
 module.exports = isSpare;

@@ -1,106 +1,92 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import Head from "next/head";
-import isStrike from "./../utilities/isStrike";
-import isSpare from "./../utilities/isSpare";
+import SimulateGame from "./../utilities/simulateGame";
 
 const Home = () => {
-  let currentScore = 0;
-  let reserveScore = 14;
-  let strike = false;
-  let spare = false;
-  let bowlsLeft = 0;
-  // const createFrames = () => {
-  //   let frames = [];
-  //   for (let i = 0; i < 10; i++) {
-  //     frames.push(<li key={i}>Frame {i + 1}</li>);
-  //   }
-  //   return frames;
-  // };
-  frames = [
+  const [name, setName] = useState("");
+  const [isName, setIsName] = useState(false);
+  const frames = [
     {
-      frameOne: {
-        title: "Frame One",
-        scoreOne: 0,
-        scoreTwo: 0
-      },
-      frameTwo: {
-        title: "Frame Two",
-        scoreOne: 0,
-        scoreTwo: 0
-      },
-      frameThree: {
-        title: "Frame Three",
-        scoreOne: 0,
-        scoreTwo: 0
-      },
-      frameFour: {
-        title: "Frame Four",
-        scoreOne: 0,
-        scoreTwo: 0
-      },
-      frameFive: {
-        title: "Frame Five",
-        scoreOne: 0,
-        scoreTwo: 0
-      },
-      frameSix: {
-        title: "Frame Six",
-        scoreOne: 0,
-        scoreTwo: 0
-      },
-      frameSeven: {
-        title: "Frame Seven",
-        scoreOne: 0,
-        scoreTwo: 0
-      },
-      frameEight: {
-        title: "Frame Eight",
-        scoreOne: 0,
-        scoreTwo: 0
-      },
-      frameNine: {
-        title: "Frame Nine",
-        scoreOne: 0,
-        scoreTwo: 0
-      },
-      frameTen: {
-        title: "Frame Ten",
-        scoreOne: 0,
-        scoreTwo: 0
-      }
+      title: "Frame One",
+      rollOne: 0,
+      rollTwo: 0,
+      score: "-"
+    },
+    {
+      title: "Frame Two",
+      rollOne: 0,
+      rollTwo: 0,
+      score: "-"
+    },
+    {
+      title: "Frame Three",
+      rollOne: 0,
+      rollTwo: 0,
+      score: "-"
+    },
+    {
+      title: "Frame Four",
+      rollOne: 0,
+      rollTwo: 0,
+      score: "-"
+    },
+    {
+      title: "Frame Five",
+      rollOne: 0,
+      rollTwo: 0,
+      score: "-"
+    },
+    {
+      title: "Frame Six",
+      rollOne: 0,
+      rollTwo: 0,
+      score: "-"
+    },
+    {
+      title: "Frame Seven",
+      rollOne: 0,
+      rollTwo: 0,
+      score: "-"
+    },
+    {
+      title: "Frame Eight",
+      rollOne: 0,
+      rollTwo: 0,
+      score: "-"
+    },
+    {
+      title: "Frame Nine",
+      rollOne: 0,
+      rollTwo: 0,
+      score: "-"
+    },
+    {
+      title: "Frame Ten",
+      rollOne: 0,
+      rollTwo: 0,
+      score: "-"
     }
   ];
-
+  const handleChange = e => {
+    setName(e.target.value);
+  };
+  const handleName = e => {
+    console.log(name.length);
+    if (name.length) {
+      setIsName(true);
+    }
+  };
   const handleClick = e => {
-    e.preventDefault();
-    let firstBowl = 0;
-    let secondBowl = 0;
-    let thirdBowl = 0;
-    let frameTotal = 0;
-    firstBowl = Math.floor(Math.random() * Math.floor(11));
-    secondBowl = Math.floor(Math.random() * Math.floor(11 - firstBowl));
-    frameTotal = firstBowl + secondBowl;
-    if (isStrike && frameTotal < 10) {
-      currentScore += reserveScore + frameTotal;
-      console.log(currentScore);
+    let game = new SimulateGame();
+    for (let i = 0; i < 10; i++) {
+      let firstPins = Math.floor(Math.random() * Math.floor(11));
+      game.bowl(firstPins);
+      let secondPins = Math.floor(Math.random() * Math.floor(11 - firstPins));
+      game.bowl(secondPins);
+      console.log(game.rolls);
     }
-    if (isSpare && frameTotal < 10) {
-      currentScore += reserveScore + firstBowl;
-      console.log(currentScore);
-    }
-    strike = isStrike(firstBowl);
-    spare = isSpare(firstBowl, secondBowl);
-    if (strike) {
-      reserveScore = 10;
-      bowls++;
-      console.log(reserveScore);
-    } else if (spare) {
-      reserveScore += 10;
-      console.log(reserveScore);
-    } else {
-      currentScore += frameTotal;
-      console.log(currentScore);
-    }
+    game.score;
+    console.log(game.frameTotals);
   };
 
   return (
@@ -110,12 +96,41 @@ const Home = () => {
       </Head>
 
       <main>
-        <h1 className="title">BOWL-A-RAMA</h1>
+        <h1 className="title">BOWLING GAME</h1>
         <div className="">
-          <div>
-            <ul>{createFrames()}</ul>
-          </div>
-          <button onClick={handleClick}>BOWL!</button>
+          {!isName ? (
+            <Fragment>
+              {" "}
+              <label htmlFor="name">Enter A Name:</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                size="10"
+                onChange={handleChange}
+              />
+              <button onClick={handleName}>Enter</button>
+            </Fragment>
+          ) : (
+            <Fragment>
+              {" "}
+              <div>
+                <h2>Welcome, {name}</h2>
+                {frames.map((frame, i) => {
+                  <div className="box" key={i}>
+                    <div className="frame_title">{frame.title}</div>
+                    <div className="roll_one">
+                      {frame.rollOne}
+                      <div className="roll_two">{frame.rollTwo}</div>
+                    </div>
+                    <div className="frame_score">{frame.score}</div>
+                  </div>;
+                })}
+              </div>
+              <button onClick={handleClick}>BOWL!</button>
+            </Fragment>
+          )}
         </div>
       </main>
 
@@ -146,6 +161,10 @@ const Home = () => {
           flex-direction: column;
           justify-content: center;
           align-items: center;
+        }
+        .box {
+          height: 300px;
+          width: 300px;
         }
 
         footer {

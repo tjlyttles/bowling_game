@@ -7,60 +7,49 @@ const Home = () => {
   const [name, setName] = useState("");
   const [isName, setIsName] = useState(false);
   const [secondRolls, setSecondRolls] = useState([]);
-  const [firstRolls, setFirstRolls] = useState();
-  const [frameScores, setFrameScores] = useState();
-  let rolls = [];
+
+  const [bonusRoll, setBonusRoll] = useState(0);
+  const [frameScores, setFrameScores] = useState([]);
   const [frames, setFrames] = useState([
     {
       firstRoll: 0,
-      secondRoll: 0,
-      score: 0
+      secondRoll: 0
     },
     {
       firstRoll: 0,
-      secondRoll: 0,
-      score: 0
+      secondRoll: 0
     },
     {
       firstRoll: 0,
-      secondRoll: 0,
-      score: 0
+      secondRoll: 0
     },
     {
       firstRoll: 0,
-      secondRoll: 0,
-      score: 0
+      secondRoll: 0
     },
     {
       firstRoll: 0,
-      secondRoll: 0,
-      score: 0
+      secondRoll: 0
     },
     {
       firstRoll: 0,
-      secondRoll: 0,
-      score: 0
+      secondRoll: 0
     },
     {
       firstRoll: 0,
-      secondRoll: 0,
-      score: 0
+      secondRoll: 0
     },
     {
       firstRoll: 0,
-      secondRoll: 0,
-      score: 0
+      secondRoll: 0
     },
     {
       firstRoll: 0,
-      secondRoll: 0,
-      score: 0
+      secondRoll: 0
     },
     {
       firstRoll: 0,
-      secondRoll: 0,
-      thirdRoll: 0,
-      score: 0
+      secondRoll: 0
     }
   ]);
 
@@ -71,23 +60,21 @@ const Home = () => {
   };
 
   const handleClick = e => {
-    const newFrames = [...frames];
-    for (let i = 0; i < 10; i++) {
-      let firstPins = Math.floor(Math.random() * Math.floor(11));
-      game.bowl(firstPins);
-      rolls.push(firstPins);
-      let secondPins = Math.floor(Math.random() * Math.floor(11 - firstPins));
-      game.bowl(secondPins);
-      rolls.push(secondPins);
-
-      frames[i].firstRoll = firstPins;
-      frames[i].secondRoll = secondPins;
-    }
-    setFrames(newFrames);
-
+    let newFrames = [...frames];
+    let newScores = frameScores;
+    let newBonus = bonusRoll;
+    game.roll();
     game.score;
+    newFrames = game.rolls;
+    newBonus = game.bonusRoll;
+    setFrames(newFrames);
+    setBonusRoll(newBonus);
 
-    console.log(game.frameTotals);
+    newScores = game.frameTotals;
+    setFrameScores(newScores);
+
+    console.log(newFrames);
+    console.log(newScores);
   };
   useEffect(() => {}, [frames]);
 
@@ -126,8 +113,18 @@ const Home = () => {
                       <strong>Frame {i + 1}</strong>
                       <div>First roll: {frame.firstRoll}</div>
                       <div>Second roll: {frame.secondRoll}</div>
+
+                      {i === 9 && <div>Third roll: {bonusRoll}</div>}
                     </div>
                   ))}
+                </div>
+                <div className="score_board">
+                  {frameScores &&
+                    frameScores.map((score, j) => (
+                      <div className="score_box" key={j}>
+                        Frame Score: {score}
+                      </div>
+                    ))}
                 </div>
               </div>
             </Fragment>
@@ -164,7 +161,13 @@ const Home = () => {
           align-items: center;
         }
         .box {
-          height: 150px;
+          height: 100px;
+          width: 150px;
+          border: 1px black solid;
+          text-align: center;
+        }
+        .score_box {
+          height: 40px;
           width: 150px;
           border: 1px black solid;
           text-align: center;

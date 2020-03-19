@@ -6,33 +6,33 @@ beforeEach(() => {
 });
 
 it("returns a score of 0", () => {
-  rollMany(0, 20);
+  rollMany(0, 0, 20);
   expect(game.score).toEqual(0);
 });
 it("returns a correct score for a spare", () => {
-  game.bowl(5);
-  game.bowl(5);
-  game.bowl(3);
-  rollMany(0, 17);
+  game.bowl(5, 5);
 
-  expect(game.score).toEqual(16);
+  game.bowl(1, 3);
+  rollMany(0, 0, 18);
+
+  expect(game.score).toEqual(15);
 });
 it("returns a score for a strike", () => {
-  game.bowl(10);
-  game.bowl(5);
-  game.bowl(3);
-  rollMany(0, 17);
+  game.bowl(10, 0);
+  game.bowl(5, 3);
+  rollMany(0, 0, 18);
 
   expect(game.score).toEqual(26);
 });
 it("returns a score for a perfect game", () => {
-  rollMany(10, 20);
+  rollMany(10, 0, 20);
+  game.bonusroll = 10;
 
   expect(game.score).toEqual(300);
 });
 
-function rollMany(pins, rolls) {
+function rollMany(first, second, rolls) {
   for (let i = 0; i < rolls; i++) {
-    game.bowl(pins);
+    game.bowl(first, second);
   }
 }

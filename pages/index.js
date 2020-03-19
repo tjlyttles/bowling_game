@@ -3,91 +3,93 @@ import Head from "next/head";
 import SimulateGame from "./../utilities/simulateGame";
 
 const Home = () => {
+  let game = new SimulateGame();
   const [name, setName] = useState("");
   const [isName, setIsName] = useState(false);
-  const frames = [
+  const [secondRolls, setSecondRolls] = useState([]);
+  const [firstRolls, setFirstRolls] = useState();
+  const [frameScores, setFrameScores] = useState();
+  let rolls = [];
+  const [frames, setFrames] = useState([
     {
-      title: "Frame One",
-      rollOne: 0,
-      rollTwo: 0,
-      score: "-"
+      firstRoll: 0,
+      secondRoll: 0,
+      score: 0
     },
     {
-      title: "Frame Two",
-      rollOne: 0,
-      rollTwo: 0,
-      score: "-"
+      firstRoll: 0,
+      secondRoll: 0,
+      score: 0
     },
     {
-      title: "Frame Three",
-      rollOne: 0,
-      rollTwo: 0,
-      score: "-"
+      firstRoll: 0,
+      secondRoll: 0,
+      score: 0
     },
     {
-      title: "Frame Four",
-      rollOne: 0,
-      rollTwo: 0,
-      score: "-"
+      firstRoll: 0,
+      secondRoll: 0,
+      score: 0
     },
     {
-      title: "Frame Five",
-      rollOne: 0,
-      rollTwo: 0,
-      score: "-"
+      firstRoll: 0,
+      secondRoll: 0,
+      score: 0
     },
     {
-      title: "Frame Six",
-      rollOne: 0,
-      rollTwo: 0,
-      score: "-"
+      firstRoll: 0,
+      secondRoll: 0,
+      score: 0
     },
     {
-      title: "Frame Seven",
-      rollOne: 0,
-      rollTwo: 0,
-      score: "-"
+      firstRoll: 0,
+      secondRoll: 0,
+      score: 0
     },
     {
-      title: "Frame Eight",
-      rollOne: 0,
-      rollTwo: 0,
-      score: "-"
+      firstRoll: 0,
+      secondRoll: 0,
+      score: 0
     },
     {
-      title: "Frame Nine",
-      rollOne: 0,
-      rollTwo: 0,
-      score: "-"
+      firstRoll: 0,
+      secondRoll: 0,
+      score: 0
     },
     {
-      title: "Frame Ten",
-      rollOne: 0,
-      rollTwo: 0,
-      score: "-"
+      firstRoll: 0,
+      secondRoll: 0,
+      thirdRoll: 0,
+      score: 0
     }
-  ];
-  const handleChange = e => {
-    setName(e.target.value);
-  };
+  ]);
+
   const handleName = e => {
-    console.log(name.length);
     if (name.length) {
       setIsName(true);
     }
   };
+
   const handleClick = e => {
-    let game = new SimulateGame();
+    const newFrames = [...frames];
     for (let i = 0; i < 10; i++) {
       let firstPins = Math.floor(Math.random() * Math.floor(11));
       game.bowl(firstPins);
+      rolls.push(firstPins);
       let secondPins = Math.floor(Math.random() * Math.floor(11 - firstPins));
       game.bowl(secondPins);
-      console.log(game.rolls);
+      rolls.push(secondPins);
+
+      frames[i].firstRoll = firstPins;
+      frames[i].secondRoll = secondPins;
     }
+    setFrames(newFrames);
+
     game.score;
+
     console.log(game.frameTotals);
   };
+  useEffect(() => {}, [frames]);
 
   return (
     <div className="container">
@@ -101,14 +103,14 @@ const Home = () => {
           {!isName ? (
             <Fragment>
               {" "}
-              <label htmlFor="name">Enter A Name:</label>
+              <label htmlFor="name">Enter A Name: </label>
               <input
                 type="text"
                 id="name"
                 name="name"
                 required
                 size="10"
-                onChange={handleChange}
+                onChange={e => setName(e.target.value)}
               />
               <button onClick={handleName}>Enter</button>
             </Fragment>
@@ -117,18 +119,17 @@ const Home = () => {
               {" "}
               <div>
                 <h2>Welcome, {name}</h2>
-                {frames.map((frame, i) => {
-                  <div className="box" key={i}>
-                    <div className="frame_title">{frame.title}</div>
-                    <div className="roll_one">
-                      {frame.rollOne}
-                      <div className="roll_two">{frame.rollTwo}</div>
+                <button onClick={e => handleClick()}>BOWL!</button>
+                <div className="score_board">
+                  {frames.map((frame, i) => (
+                    <div className="box" key={i}>
+                      <strong>Frame {i + 1}</strong>
+                      <div>First roll: {frame.firstRoll}</div>
+                      <div>Second roll: {frame.secondRoll}</div>
                     </div>
-                    <div className="frame_score">{frame.score}</div>
-                  </div>;
-                })}
+                  ))}
+                </div>
               </div>
-              <button onClick={handleClick}>BOWL!</button>
             </Fragment>
           )}
         </div>
@@ -163,8 +164,14 @@ const Home = () => {
           align-items: center;
         }
         .box {
-          height: 300px;
-          width: 300px;
+          height: 150px;
+          width: 150px;
+          border: 1px black solid;
+          text-align: center;
+        }
+        .score_board {
+          display: flex;
+          justify-content: space-around;
         }
 
         footer {

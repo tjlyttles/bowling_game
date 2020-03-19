@@ -71,23 +71,26 @@ class SimulateGame {
   }
   strikeBonus(currentRoll) {
     let bonusScore = 10;
-    console.log("current: ", currentRoll);
-    console.log("first roll+1: ", this.rolls[currentRoll + 1].firstRoll);
-    console.log("first roll+2: ", this.rolls[currentRoll + 2].firstRoll);
-    if (currentRoll < 7) {
-      if (
-        isStrike(this.rolls[currentRoll + 2].firstRoll) &&
-        isStrike(this.rolls[currentRoll + 3].firstRoll)
-      ) {
-        bonusScore += 10;
-      }
+    if (currentRoll === 9) {
+      return (bonusScore +=
+        this.rolls[currentRoll].secondRoll + this.bonusRoll);
+    }
+    if (currentRoll === 8) {
+      return (bonusScore +=
+        this.rolls[currentRoll + 1].firstRoll +
+        this.rolls[currentRoll + 1].secondRoll);
+    }
+    if (
+      isStrike(this.rolls[currentRoll + 1].firstRoll) &&
+      isStrike(this.rolls[currentRoll + 2].firstRoll)
+    ) {
+      bonusScore += 10;
     }
 
     return (
       bonusScore +
       this.rolls[currentRoll + 1].firstRoll +
-      this.rolls[currentRoll + 1].secondRoll +
-      this.bonusRoll
+      this.rolls[currentRoll + 1].secondRoll
     );
   }
 }

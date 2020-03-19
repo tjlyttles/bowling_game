@@ -24,11 +24,11 @@ it("returns a score for a strike", () => {
 
   expect(game.score).toEqual(26);
 });
-it("returns a score for a perfect game", () => {
+it("returns a score for a perfect game not taking into account final frames second roll", () => {
   rollMany(10, 0, 20);
   game.bonusroll = 10;
-
-  expect(game.score).toEqual(300);
+  console.log(game.bonusroll);
+  expect(game.score).toEqual(270);
 });
 
 function rollMany(first, second, rolls) {

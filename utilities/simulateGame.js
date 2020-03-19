@@ -10,7 +10,7 @@ class SimulateGame {
   bowl(first, second) {
     this.rolls.push({ firstRoll: first, secondRoll: second });
   }
-//Generates random numbers for rolls
+  //Generates random numbers for rolls
   roll() {
     for (let i = 0; i < 10; i++) {
       let firstPins = Math.floor(Math.random() * Math.floor(11));
@@ -62,6 +62,7 @@ class SimulateGame {
       currentRoll++;
       this.frameTotals.push(score);
     }
+    console.log(this.rolls);
     console.log(this.frameTotals);
     return score;
   }
@@ -74,20 +75,28 @@ class SimulateGame {
   }
   strikeBonus(currentRoll) {
     let bonusScore = 10;
+    //final frame
     if (currentRoll === 9) {
+      console.log(
+        "final frame: ",
+        this.rolls[currentRoll].secondRoll,
+        this.bonusRoll
+      );
       return (bonusScore +=
         this.rolls[currentRoll].secondRoll + this.bonusRoll);
     }
+    // if frame 9 add first and second roll of final frame
     if (currentRoll === 8) {
       return (bonusScore +=
         this.rolls[currentRoll + 1].firstRoll +
         this.rolls[currentRoll + 1].secondRoll);
     }
-    if (
-      isStrike(this.rolls[currentRoll + 1].firstRoll) &&
-      isStrike(this.rolls[currentRoll + 2].firstRoll)
-    ) {
-      bonusScore += 10;
+    if (isStrike(this.rolls[currentRoll + 1].firstRoll)) {
+      //if next frame firstroll is a strike add next, next first roll
+
+      return (bonusScore +=
+        this.rolls[currentRoll + 1].firstRoll +
+        this.rolls[currentRoll + 2].firstRoll);
     }
 
     return (

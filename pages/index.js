@@ -6,10 +6,9 @@ const Home = () => {
   let game = new SimulateGame();
   const [name, setName] = useState("");
   const [isName, setIsName] = useState(false);
-  const [secondRolls, setSecondRolls] = useState([]);
-
   const [bonusRoll, setBonusRoll] = useState(0);
   const [frameScores, setFrameScores] = useState([]);
+  // Set up initial frames
   const [frames, setFrames] = useState([
     {
       firstRoll: 0,
@@ -52,13 +51,13 @@ const Home = () => {
       secondRoll: 0
     }
   ]);
-
+  // Checks to see if user entered a name
   const handleName = e => {
     if (name.length) {
       setIsName(true);
     }
   };
-
+  //generates a new game
   const handleClick = e => {
     let newFrames = [...frames];
     let newScores = frameScores;
@@ -72,9 +71,6 @@ const Home = () => {
 
     newScores = game.frameTotals;
     setFrameScores(newScores);
-
-    console.log(newFrames);
-    console.log(newScores);
   };
   useEffect(() => {}, [frames]);
 
